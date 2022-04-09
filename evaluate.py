@@ -136,9 +136,9 @@ def evaluate(arg):
     if arg.do_amt_eval:
         # preapre AMT annotated dataset
         if arg.task == 'personachat':
-            evaldataset = PersonaChatDataset.getAMTEvalDataset(tokenizer, './resource/AMT_dataset/persona_highlight.json', DEBUG=arg.DEBUG)
+            evaldataset = PersonaChatDataset.getAMTEvalDataset(tokenizer, './resource/AMT_dataset/persona_highlight.json', split='test', DEBUG=arg.DEBUG)
         elif arg.task == 'dailymail':
-            evaldataset = CNN_DAILYMAILDataset.getAMTEvalDataset(tokenizer, './resource/AMT_dataset/dailymail_highlight.json', DEBUG=arg.DEBUG)
+            evaldataset = CNN_DAILYMAILDataset.getAMTEvalDataset(tokenizer, './resource/AMT_dataset/dailymail_highlight.json', split='test', DEBUG=arg.DEBUG)
 
     else:
         if arg.do_focus_eval:
@@ -171,14 +171,14 @@ def evaluate(arg):
 
 if __name__ == "__main__":
     argparser = ArgumentParser()
-    argparser.add_argument('--task', choices=['personachat', 'dailymail'])
+    argparser.add_argument('--task', choices=['personachat', 'dailymail'], help="Which datasets is working on")
     argparser.add_argument('--attr_dir', help="The directory of attribution scores")
-    argparser.add_argument('--do_finetune_eval', action='store_true')
-    argparser.add_argument('--do_focus_eval', action='store_true')
-    argparser.add_argument('--do_keyword_eval', action='store_true')
-    argparser.add_argument('--do_amt_eval', action='store_true')
-    argparser.add_argument('--attn_onfly', action='store_true')
-    argparser.add_argument('--pretrained_model_path', required=True, help="The model to be evaluated")
+    argparser.add_argument('--do_finetune_eval', action='store_true', help="Evaluate finetune model")
+    argparser.add_argument('--do_focus_eval', action='store_true', help="Evaluate focus vector")
+    argparser.add_argument('--do_keyword_eval', action='store_true', help="Evaluate prompt model")
+    argparser.add_argument('--do_amt_eval', action='store_true', help="Evaluate on highlighg dataset")
+    argparser.add_argument('--attn_onfly', action='store_true', help="Evaluate onfly attention model")
+    argparser.add_argument('--pretrained_model_path', required=True, help="The pretrained model to be evaluated")
     argparser.add_argument('--DEBUG', action='store_true')
 
     setSeed()
