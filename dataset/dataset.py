@@ -316,7 +316,7 @@ class PersonaChatDataset:
         return dataset
     
     @staticmethod
-    def getAMTEvalDataset(tokenizer, rawpath, **kwargs):
+    def getAMTEvalDataset(tokenizer, rawpath, split, **kwargs):
         raw_data = json.load(open(rawpath, 'r'))
 
         allfeatures = []
@@ -327,6 +327,10 @@ class PersonaChatDataset:
         eos_id = tokenizer.eos_token_id
 
         for item in raw_data:
+
+            if item['split'] != split:
+                continue
+
             input_ids = []
             id_splits = []
             persona_prefix = []
@@ -390,12 +394,15 @@ class CNN_DAILYMAILDataset:
         return self.name
     
     @staticmethod
-    def getAMTEvalDataset(tokenizer, rawpath, **kwargs):
+    def getAMTEvalDataset(tokenizer, rawpath, split, **kwargs):
         raw_data = json.load(open(rawpath, 'r'))
         allfeatures = []
         bos_token_id = tokenizer.bos_token_id
         eos_token_id = tokenizer.eos_token_id
         for item in raw_data:
+            if item['split'] != split:
+                continue
+
             input_ids = [bos_token_id]
             id_splits = []
             highlights = []
@@ -439,11 +446,9 @@ class CNN_DAILYMAILDataset:
             return model_inputs
             
         if kwargs.get("DEBUG", False):
-            # dataset = load_dataset('cnn_dailymail', '3.0.0', split=split)
-            dataset = load_dataset('ccdv/cnn_dailymail', '3.0.0', split=f"{split}[:50]") # original cnn_dailymail dataset is broken here
+            dataset = load_dataset('cnn_dailymail', '3.0.0', split=split)
         else:
-            # dataset = load_dataset('cnn_dailymail', '3.0.0', split=f"{split}[:50]")
-            dataset = load_dataset('ccdv/cnn_dailymail', '3.0.0', split=f"{split}")
+            dataset = load_dataset('cnn_dailymail', '3.0.0', split=f"{split}[:50]")
             
         dataset = dataset.map(partial(process_examples, add_Keyword=add_Keyword), batched=True, num_proc=4)
         featuresAll = [Feature(input_ids=x['input_ids'], labels=x['labels']) for x in tqdm(dataset)]

@@ -279,13 +279,13 @@ def keyword_train(arg):
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--task', choices=['personachat', 'dailymail'])
+    argparser.add_argument('--task', choices=['personachat', 'dailymail'], help="Which datasets to work on")
     argparser.add_argument('--do_finetune', action='store_true', help="Finetune base model on dataset")
     argparser.add_argument('--do_focus_train', action='store_true', help="Train focus-embedding with finetuned model")
     argparser.add_argument('--do_keyword_train', action='store_true', help="Train prompt with finetuned model")
-    argparser.add_argument('--finetune_model_path')
+    argparser.add_argument('--finetune_model_path', help="Pretrained model path for focus-train and prompt-train")
     argparser.add_argument('--attr_dir', help="The directory of attribution scores")
-    argparser.add_argument('--attn_type', choices=['none', 'input', 'layer', 'attention', 'mul_input', 'mul_layer', 'lin_input', 'lin_layer', 'mul_flayer'])
+    argparser.add_argument('--attn_type', choices=['none', 'input', 'layer', 'attention', 'mul_input', 'mul_layer', 'lin_input', 'lin_layer', 'mul_flayer'], help="Different types of focus vectors")
     argparser.add_argument('--lr', type=float, help='learning rate of our main goal, namely model parameter when finetune; focus vector when focus-train')
     argparser.add_argument('--modellr', type=float, help="learning rate for model parameter if we don't fix them")
     argparser.add_argument('--DEBUG', action='store_true')

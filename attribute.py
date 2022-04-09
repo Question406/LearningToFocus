@@ -38,9 +38,9 @@ def collect_attrs(dataset, model, tokenizer, save_dir):
 
 if __name__ == "__main__":
     argparser = ArgumentParser()
-    argparser.add_argument('--task', choices=['personachat', 'dailymail'])
-    argparser.add_argument('--save_dir', default='./resource/attrs')
-    argparser.add_argument('--finetune_model_path', required=True)
+    argparser.add_argument('--task', choices=['personachat', 'dailymail'], help="Which dataset is working on")
+    argparser.add_argument('--save_dir', default='./resource/attrs', help="Which directory to save result attributions")
+    argparser.add_argument('--finetune_model_path', required=True, help="Which model do we use to attribute")
     argparser.add_argument('--DEBUG', action='store_true')
     args = argparser.parse_args()
 
